@@ -14,15 +14,31 @@ class BooksApp extends React.Component {
       this.setState({books})
     })
   }
+  handleBookChange = (book, shelf) => {
+    BooksAPI.update(book, shelf).then(updatedShelves => {
+      this.setState(state => {
+        Object.keys(updatedShelves)
+          .reduce((acc, s) => {
+            return updatedShelves[s].map(bookId => {
+              const bookToUpdate = state.books.find(book => book.id === bookId);
+              bookToUpdate.shelf = s;
+              return bookToUpdate;
+            }).concat(acc)
+          }, [])
+      })
+    })
+  }
   componentDidMount() {
     this.getAllBooks();
   }
   render() {
-    // this.getAllBooks();
     return (
       <div className="app">
         <Route exact path='/' render={() => (
-          <ListBooks books={this.state.books} />
+          <ListBooks
+            books={this.state.books}
+            handleBookChange={this.handleBookChange}
+          />
         )} />
         <Route path='/search' component={Search} />
       </div>

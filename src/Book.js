@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Book extends Component {
   render() {
     const {book} = this.props;
-    const {title, authors} = book;
+    const {shelf, title, authors} = book;
     const bookCoverStyle = {
       width: 128,
       height: 193,
@@ -15,11 +15,15 @@ class Book extends Component {
           <div className="book-top">
             <div className="book-cover" style={bookCoverStyle}></div>
             <div className="book-shelf-changer">
-              <select>
+              <select
+                value={shelf}
+                onChange={
+                  (e) => this.props.handleBookChange(book, e.target.value)
+                }>
                 <option value="none" disabled>Move to...</option>
-                <option selected={book.shelf === 'currentlyReading'} value="currentlyReading">Currently Reading</option>
-                <option selected={book.shelf === 'wantToRead'} value="wantToRead">Want to Read</option>
-                <option selected={book.shelf === 'read'} value="read">Read</option>
+                <option value="currentlyReading">Currently Reading</option>
+                <option value="wantToRead">Want to Read</option>
+                <option value="read">Read</option>
                 <option value="none">None</option>
               </select>
             </div>
