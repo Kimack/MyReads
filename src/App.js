@@ -10,22 +10,16 @@ class BooksApp extends React.Component {
     books: []
   }
   getAllBooks = () => {
-    BooksAPI.getAll().then((books) => {
-      this.setState({books})
-    })
-  }
-  handleBookChange = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(updatedShelves => {
-      this.setState(state => {
-        Object.keys(updatedShelves)
-          .reduce((acc, s) => {
-            return updatedShelves[s].map(bookId => {
-              const bookToUpdate = state.books.find(book => book.id === bookId);
-              bookToUpdate.shelf = s;
-              return bookToUpdate;
-            }).concat(acc)
-          }, [])
+    BooksAPI.getAll()
+      .then((books) => {
+        this.setState({books})
       })
+  }
+  handleBookChange = (id, shelf) => {
+    BooksAPI.update({id}, shelf)
+      .then(() => {
+        this.setState(state => state.books
+          .map(b => b.id === id ? Object.assign(b, {shelf}) : b))
     })
   }
   componentDidMount() {

@@ -18,7 +18,7 @@ class Book extends Component {
               <select
                 value={shelf}
                 onChange={
-                  (e) => this.props.handleBookChange(book, e.target.value)
+                  (e) => this.props.handleBookChange(book.id, e.target.value)
                 }>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
