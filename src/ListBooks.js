@@ -29,7 +29,7 @@ class ListBooks extends Component {
                         .filter(book => book.shelf === shelf)
                         .map(book => (
                           <Book
-                            key={book.title}
+                            key={book.id}
                             book={book}
                             handleBookChange={this.props.handleBookChange}
                           />

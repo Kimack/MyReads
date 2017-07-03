@@ -9,17 +9,31 @@ class BooksApp extends React.Component {
   state = {
     books: []
   }
+  bookIndex = (id) => {
+    return this.state.books.findIndex(b => b.id === id)
+  }
   getAllBooks = () => {
     BooksAPI.getAll()
       .then((books) => {
         this.setState({books})
       })
   }
-  handleBookChange = (id, shelf) => {
-    BooksAPI.update({id}, shelf)
-      .then(() => {
-        this.setState(state => state.books
-          .map(b => b.id === id ? Object.assign(b, {shelf}) : b))
+  handleBookChange = (book, shelf) => {
+    BooksAPI.update({id: book.id}, shelf)
+      .then((res) => {
+        const idx = this.bookIndex(book.id);
+        if (idx !== -1) {
+          this.setState(state => {
+            state.books[idx].shelf = shelf;
+            return state;
+          })
+        } else {
+          this.setState(state => {
+            book.shelf = shelf;
+            state.books.push(book);
+            return state;
+          })
+        }
     })
   }
   getBook = (id) => {
@@ -40,7 +54,12 @@ class BooksApp extends React.Component {
             handleBookChange={this.handleBookChange}
           />
         )} />
-        <Route path='/search' component={Search} />
+        <Route path='/search' render={() => (
+          <Search
+            books={this.state.books}
+            handleBookChange={this.handleBookChange}
+          />
+        )} />
       </div>
     )
   }
