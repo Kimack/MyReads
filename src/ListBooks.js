@@ -31,7 +31,7 @@ class ListBooks extends Component {
                           <Book
                             key={book.id}
                             book={book}
-                            handleBookChange={this.props.handleBookChange}
+                            handleBookListChange={this.props.handleBookListChange}
                           />
                         ))
                       }

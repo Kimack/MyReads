@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
+// our modules
 import Book from './Book';
 
-class Search extends Component {
+class Search extends React.Component {
   constructor(props) {
     super(props)
 
@@ -11,42 +12,54 @@ class Search extends Component {
     this.state = {
       books: []
     }
+    this.searchDelay = 500
   }
+
   resetBooks() {
     this.setState({books: []})
   }
+
+  trimQuery(query) {
+    return query.trim()
+  }
+
   handleSearchInput(e) {
-    const query = e.target.value;
-    this.query = query;
+    const queryCopy = e.target.value;
+    this.query = queryCopy;
+
     setTimeout(() => {
-      if (!query) {
-        this.resetBooks()
-      } else if (this.query === query) {
+      if (queryCopy === '') {
+        this.resetBooks();
+        return;
+      }
+      // Only if the query is unchanged after 500 ms, do we do a search.
+      if (this.query === queryCopy) {
         BooksAPI.search(this.query)
           .then(books => {
             if (books.error) {
               this.resetBooks();
+              return;
             }
             if (books.length) {
               this.setState(state => {
                 state.books = books.map(book => {
-                  const inListAlready = this.props.books.find(b => b.id === book.id)
-                  return inListAlready ? inListAlready :
-                                         Object.assign(book, {shelf: 'none'})
+                  const idx = this.props.findBookInList(book.id)
+                  return idx !== -1 ? this.props.books[idx] :
+                                      Object.assign(book, {shelf: 'none'})
                 })
                 return state;
               })
             }
           })
       }
-      return;
-    }, 500)
+    }, this.searchDelay)
   }
+
   render() {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <Link to='/' alt='Close search' className='close-search'>Close</Link>
+          <Link to="/" alt="Close search" className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
             <input
               type="text"
@@ -63,7 +76,7 @@ class Search extends Component {
                 <Book
                   key={book.id}
                   book={book}
-                  handleBookChange={this.props.handleBookChange}
+                  handleBookListChange={this.props.handleBookListChange}
                 />
               ))
             }
