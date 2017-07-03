@@ -22,6 +22,12 @@ class BooksApp extends React.Component {
           .map(b => b.id === id ? Object.assign(b, {shelf}) : b))
     })
   }
+  getBook = (id) => {
+    BooksAPI.get(id)
+      .then(book => {
+        this.setState(state => Object.assign(state, book))
+      })
+  }
   componentDidMount() {
     this.getAllBooks();
   }
