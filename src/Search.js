@@ -20,10 +20,6 @@ class Search extends React.Component {
     this.setState({books: []})
   }
 
-  trimQuery(query) {
-    return query.trim()
-  }
-
   componentWillMount() {
     const query = queryString.parse(location.search);
     if (query.search) {
