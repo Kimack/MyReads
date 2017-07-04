@@ -9,9 +9,14 @@ function Book(props) {
           <div className="book-cover" style={{
             width: 128,
             height: 193,
-            backgroundImage: `url("${book.imageLinks.thumbnail}")`
+            backgroundImage: `url("${book.imageLinks.thumbnail}")`,
+            outline: book.shelf === 'none' ? '2px solid rgba(0,0,0,0.23)' : 'none',
+            boxShadow: (book.shelf === 'none' ? 'none' :
+              '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)')
           }}></div>
-          <div className="book-shelf-changer">
+          <div className="book-shelf-changer" style={{
+            backgroundColor: book.shelf === 'none' ? '#ccc' : '#60ac5d'
+          }}>
             <select
               value={book.shelf}
               onChange={
