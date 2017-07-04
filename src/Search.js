@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
 import * as BooksAPI from './BooksAPI';
 // our modules
 import Book from './Book';
@@ -8,14 +9,14 @@ class Search extends React.Component {
   constructor(props) {
     super(props)
 
-    this.query = ''
     this.state = {
-      books: []
+      books: [],
+      query: ''
     }
     this.searchDelay = 500
   }
 
-  resetBooks() {
+  resetBookList() {
     this.setState({books: []})
   }
 
@@ -23,21 +24,28 @@ class Search extends React.Component {
     return query.trim()
   }
 
-  handleSearchInput(e) {
-    const queryCopy = e.target.value;
-    this.query = queryCopy;
+  componentWillMount() {
+    const query = queryString.parse(location.search);
+    if (query.search) {
+      this.handleSearchInput(query.search)
+    }
+  }
+
+  handleSearchInput(searchQuery) {
+    const queryCopy = searchQuery;
+    this.setState(state => state.query = searchQuery)
 
     setTimeout(() => {
       if (queryCopy === '') {
-        this.resetBooks();
+        this.resetBookList();
         return;
       }
       // Only if the query is unchanged after 500 ms, do we do a search.
-      if (this.query === queryCopy) {
-        BooksAPI.search(this.query)
+      if (this.state.query === queryCopy) {
+        BooksAPI.search(this.state.query)
           .then(books => {
             if (books.error) {
-              this.resetBooks();
+              this.resetBookList();
               return;
             }
             if (books.length) {
@@ -64,7 +72,8 @@ class Search extends React.Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              onChange={(e) => this.handleSearchInput(e)}
+              onChange={(e) => this.handleSearchInput(e.target.value)}
+              value={this.state.query}
               autoFocus
             />
           </div>
