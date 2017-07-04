@@ -12,7 +12,7 @@ function ListBooks(props) {
         <h1>MyReads</h1>
       </div>
       <div className="open-search">
-        <Link to='/search' alt='Add books'>Add Books</Link>
+        <Link to="/search" alt="Add books">Add Books</Link>
       </div>
       {shelves.map((shelf) => {
         return (
