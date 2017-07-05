@@ -7,10 +7,7 @@ function Book(props) {
     <li>
       <div className="book">
         <div className="book-top">
-          <Link to={{
-            pathname: `/details/${book.id}`,
-            state: {book: book}
-          }}>
+          <Link to={`/details/${book.id}`}>
             <div className="book-cover" style={{
               width: 128,
               height: 193,
