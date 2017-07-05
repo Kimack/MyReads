@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Book(props) {
   const {book} = props;
@@ -6,14 +7,19 @@ function Book(props) {
     <li>
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{
-            width: 128,
-            height: 193,
-            backgroundImage: `url("${book.imageLinks.thumbnail}")`,
-            outline: book.shelf === 'none' ? '2px solid rgba(0,0,0,0.23)' : 'none',
-            boxShadow: (book.shelf === 'none' ? 'none' :
-              '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)')
-          }}></div>
+          <Link to={{
+            pathname: `/details/${book.id}`,
+            state: {book: book}
+          }}>
+            <div className="book-cover" style={{
+              width: 128,
+              height: 193,
+              backgroundImage: `url("${book.imageLinks.thumbnail}")`,
+              outline: book.shelf === 'none' ? '2px solid rgba(0,0,0,0.23)' : 'none',
+              boxShadow: (book.shelf === 'none' ? 'none' :
+                '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)')
+            }}></div>
+          </Link>
           <div className="book-shelf-changer" style={{
             backgroundColor: book.shelf === 'none' ? '#ccc' : '#60ac5d'
           }}>
