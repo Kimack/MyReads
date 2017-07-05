@@ -25,41 +25,31 @@ class BooksApp extends React.Component {
   }
 
   getBook(id) {
+    // TODO: Do I even need to check here? I don't think I do...
     const bookIdx = this.findBookInList(id);
     if (bookIdx !== -1) {
       return Promise.resolve(this.state.books[bookIdx]);
     }
     // Because the API returns new books with a random shelf assigned, visiting
-    // the /details/:id page of a book without loading the books first, will
-    // mean that we don't know the real state of the book. At this point we're
-    // not going to jump through hoops because of inconsistent DB design, so
-    // the shelf is set to 'none' by default.
+    // the /details/:id page of a book without loading the books first, (ie.
+    // from a bookmark) will mean that we don't know the real state of the book.
+    // so the shelf is set to 'none' by default. It will then get updated once
+    // the books are loaded in getAllBooks().
     return BooksAPI.get(id)
       .then((book) => {
         book.shelf = 'none';
-        this.setState(state => {
-          state.books.push(book);
-          return state;
-        })
         return book;
-      })
-  }
-
-  getAllBooks() {
-    BooksAPI.getAll()
-      .then((books) => {
-        this.setState({books})
       })
   }
 
   handleBookListChange(book, shelf) {
     BooksAPI.update({id: book.id}, shelf)
       .then((res) => {
-        const idx = this.findBookInList(book.id);
+        const bookIdx = this.findBookInList(book.id);
         // If the book already exists in a list we only change the shelf.
-        if (idx !== -1) {
+        if (bookIdx !== -1) {
           this.setState(state => {
-            state.books[idx].shelf = shelf;
+            state.books[bookIdx].shelf = shelf;
             return state;
           })
         } else {
@@ -73,7 +63,10 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllBooks();
+    BooksAPI.getAll()
+      .then((books) => {
+        this.setState({books})
+      })
   }
 
   render() {
@@ -95,9 +88,9 @@ class BooksApp extends React.Component {
         <Route path='/details/:id' render={({match, location}) => (
           <Details
             books={this.state.books}
+            handleBookListChange={this.handleBookListChange}
             getBook={this.getBook}
             bookId={match.params.id}
-            handleBookListChange={this.handleBookListChange}
           />
         )} />
       </div>
