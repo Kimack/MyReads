@@ -1,46 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import placeholder from './bookPlaceholder.json'
 
 class Details extends React.Component {
   state = {
-    book: {
-      "title": "Booktitle",
-      "subtitle": "Subtitle",
-      "authors": [
-          "Author"
-      ],
-      "publisher": "Publisher",
-      "publishedDate": "Published Date",
-      "description": "Book Description",
-      "industryIdentifiers": [
-          {
-              "type": "ISBN_10",
-              "identifier": "ISBN_10"
-          },
-          {
-              "type": "ISBN_13",
-              "identifier": "ISBN_13"
-          }
-      ],
-      "pageCount": 0,
-      "printType": "BOOK",
-      "categories": [
-          "Categories"
-      ],
-      "averageRating": 0,
-      "ratingsCount": 0,
-      "maturityRating": "Maturity Rating",
-      "imageLinks": {
-          "smallThumbnail": "http://via.placeholder.com/256x386",
-          "thumbnail": "http://via.placeholder.com/256x386"
-      },
-      "language": "Language",
-      "previewLink": "",
-      "infoLink": "",
-      "canonicalVolumeLink": "",
-      "id": "ID",
-      "shelf": "none"
-    }
+    book: placeholder
   }
 
   componentDidMount() {
