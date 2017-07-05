@@ -176,6 +176,7 @@ body, .app {
 /* book details */
 
 .book-details {
+  position: relative;
   margin: 10px;
 }
 .book-cover-details {
@@ -185,6 +186,6 @@ body, .app {
 
 .book-shelf-changer-details {
   position: absolute;
-  left: 177px;
-  top: 280px;
+  left: 170px;
+  top: 270px;
 }
