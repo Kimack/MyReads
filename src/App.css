@@ -103,14 +103,6 @@ body, .app {
   padding: 80px 10px 20px;
 }
 
-.no-results {
-  color: #ccc;
-  font-size: 2em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* books grid */
 
 .books-grid {
@@ -179,4 +171,20 @@ body, .app {
   padding: 20px 10px 0;
   text-align: center;
   font-size: 0.8em;
+}
+
+/* book details */
+
+.book-details {
+  margin: 10px;
+}
+.book-cover-details {
+  margin: 0px 30px 20px 0px;
+  float: left;
+}
+
+.book-shelf-changer-details {
+  position: absolute;
+  left: 177px;
+  top: 280px;
 }
