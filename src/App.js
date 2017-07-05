@@ -94,6 +94,7 @@ class BooksApp extends React.Component {
         )} />
         <Route path='/details/:id' render={({match, location}) => (
           <Details
+            books={this.state.books}
             getBook={this.getBook}
             bookId={match.params.id}
             handleBookListChange={this.handleBookListChange}

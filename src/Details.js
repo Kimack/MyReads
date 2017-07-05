@@ -50,8 +50,16 @@ class Details extends React.Component {
       });
   }
 
+  findBookInListedBooks(id) {
+    const idx = this.props.books.findIndex(book => book.id === id);
+    if (idx !== -1) {
+      this.setState({book: this.props.books[idx]})
+    }
+  }
+
   render() {
     const {book} = this.state;
+    this.findBookInListedBooks(book.id);
     return (
       <div>
         <Link to="/" style={{textDecoration: 'none'}}>
