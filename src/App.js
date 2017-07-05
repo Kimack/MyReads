@@ -25,7 +25,7 @@ class BooksApp extends React.Component {
   }
 
   getBook(id) {
-    // TODO: Do I even need to check here? I don't think I do...
+    // Checks if the book is already loaded and returns it if it is.
     const bookIdx = this.findBookInList(id);
     if (bookIdx !== -1) {
       return Promise.resolve(this.state.books[bookIdx]);
@@ -89,6 +89,7 @@ class BooksApp extends React.Component {
           <Details
             books={this.state.books}
             handleBookListChange={this.handleBookListChange}
+            findBookInList={this.findBookInList}
             getBook={this.getBook}
             bookId={match.params.id}
           />

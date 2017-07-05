@@ -51,8 +51,8 @@ class Details extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // TODO: Use findBookInList() from parent.
-    const idx = nextProps.books.findIndex(b => b.id === this.props.bookId);
+    const {findBookInList, bookId} = nextProps;
+    const idx = findBookInList(bookId);
     if (idx !== -1) {
       this.setState({book: nextProps.books[idx]})
     }
