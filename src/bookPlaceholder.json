@@ -1,33 +1,29 @@
 {
   "title": "Title",
   "subtitle": "Subtitle",
-  "authors": [
-      "Authors"
-  ],
+  "authors": ["Authors"],
   "publisher": "Publisher",
   "publishedDate": "Published Date",
   "description": "Book Description",
   "industryIdentifiers": [
-      {
-          "type": "ISBN_10",
-          "identifier": "ISBN_10"
-      },
-      {
-          "type": "ISBN_13",
-          "identifier": "ISBN_13"
-      }
+    {
+      "type": "ISBN_10",
+      "identifier": "ISBN_10"
+    },
+    {
+      "type": "ISBN_13",
+      "identifier": "ISBN_13"
+    }
   ],
   "pageCount": 0,
   "printType": "BOOK",
-  "categories": [
-      "Categories"
-  ],
+  "categories": ["Categories"],
   "averageRating": 0,
   "ratingsCount": 0,
   "maturityRating": "Maturity Rating",
   "imageLinks": {
-      "smallThumbnail": "http://via.placeholder.com/256x386",
-      "thumbnail": "http://via.placeholder.com/256x386"
+    "smallThumbnail": "http://via.placeholder.com/256x386",
+    "thumbnail": "http://via.placeholder.com/256x386"
   },
   "language": "Language",
   "previewLink": "",
