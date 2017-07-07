@@ -8,6 +8,7 @@ class Details extends React.Component {
     book: placeholder
   };
 
+  // Get the book from the App state or from the API.
   componentDidMount() {
     const { getBook, bookId } = this.props;
     getBook(bookId).then(book => {
@@ -15,8 +16,9 @@ class Details extends React.Component {
     });
   }
 
-  // If the user is coming to the details page from a link, we have to update
-  // the book whenever the API has returned all the listed books.
+  // If the user is arriving from a bookmark, we need to know when the books
+  // are loaded, so that we can update the book's state appropriately in the
+  // details page.
   componentWillReceiveProps(nextProps) {
     const { findBookInList, bookId, books } = nextProps;
     const bookIndex = findBookInList(bookId);
@@ -78,14 +80,12 @@ class Details extends React.Component {
             <h1 className="book-details-title">
               {title}
             </h1>
-            <p>
-              Authors
-              {authors.map(author =>
-                <span key={author} className="book-details-author">
-                  {author}
-                </span>
-              )}
-            </p>
+            <p>Authors</p>
+            {authors.map(author =>
+              <p key={author} className="book-details-author">
+                {author}
+              </p>
+            )}
           </section>
           <p className="book-details-description">
             {description}
