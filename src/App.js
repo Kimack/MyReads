@@ -24,7 +24,7 @@ class BooksApp extends React.Component {
     return this.state.books.findIndex(book => book.id === id);
   }
 
-  getBook(id) {
+  async getBook(id) {
     // Checks if the book is already loaded and returns it if it is.
     const bookIdx = this.findBookInList(id);
     if (bookIdx !== -1) {
@@ -35,35 +35,71 @@ class BooksApp extends React.Component {
     // from a bookmark) will mean that we don't know the real state of the book.
     // so the shelf is set to 'none' by default. It will then get updated once
     // the books are loaded in getAllBooks().
-    return BooksAPI.get(id).then(book => {
+    try {
+      const book = await BooksAPI.get(id);
       book.shelf = "none";
       return book;
-    });
+    } catch (e) {
+      console.error(`There was an API error: ${e}`);
+    }
   }
 
-  handleBookListChange(book, shelf) {
-    BooksAPI.update({ id: book.id }, shelf).then(res => {
-      // If the book already exists in a list we only change the shelf.
-      const bookIdx = this.findBookInList(book.id);
-      if (bookIdx !== -1) {
-        this.setState(state => {
-          state.books[bookIdx].shelf = shelf;
-          return state;
-        });
-      } else {
-        this.setState(state => {
-          book.shelf = shelf;
-          state.books.push(book);
-          return state;
-        });
+  async handleBookListChange(book, shelf) {
+    // Save the state in case the API messes up.
+    const oldState = JSON.parse(JSON.stringify(this.state));
+    // Update the state immediately
+    const bookIdx = this.findBookInList(book.id);
+    if (bookIdx !== -1) {
+      this.setState(state => {
+        state.books[bookIdx].shelf = shelf;
+        return state;
+      });
+    } else {
+      this.setState(state => {
+        book.shelf = shelf;
+        state.books.push(book);
+        return state;
+      });
+    }
+    try {
+      const APIShelfState = await BooksAPI.update({ id: book.id }, shelf);
+      const currentShelfState = this.state.books.reduce(
+        (acc, book) => {
+          if (book.shelf !== "none") acc[book.shelf].push(book.id);
+          return acc;
+        },
+        {
+          currentlyReading: [],
+          wantToRead: [],
+          read: []
+        }
+      );
+      // Check if the API and the state are in agreement.
+      const equal = Object.keys(currentShelfState).every(shelf => {
+        return currentShelfState[shelf].every(id =>
+          APIShelfState[shelf].includes(id)
+        );
+      });
+      if (!equal) {
+        this.setState(oldState);
+        console.error(
+          "The data returned from the API did not match the current state."
+        );
       }
-    });
+    } catch (e) {
+      // reset to the previous state on API error.
+      this.setState(oldState);
+      console.error(`There was an API error: ${e}`);
+    }
   }
 
-  componentDidMount() {
-    BooksAPI.getAll().then(books => {
+  async componentDidMount() {
+    try {
+      const books = await BooksAPI.getAll();
       this.setState({ books });
-    });
+    } catch (e) {
+      console.error(`There was an API error: ${e}`);
+    }
   }
 
   render() {
