@@ -61,6 +61,7 @@ class BooksApp extends React.Component {
         return state;
       });
     }
+    // Call the API
     try {
       const APIShelfState = await BooksAPI.update({ id: book.id }, shelf);
       const currentShelfState = this.state.books.reduce(
@@ -74,7 +75,7 @@ class BooksApp extends React.Component {
           read: []
         }
       );
-      // Check if the API and the state are in agreement.
+      // Check if the API and the current state are in agreement.
       const equal = Object.keys(currentShelfState).every(shelf => {
         return currentShelfState[shelf].every(id =>
           APIShelfState[shelf].includes(id)
@@ -93,6 +94,7 @@ class BooksApp extends React.Component {
     }
   }
 
+  // Gets all the books from the API, that are currently in a list.
   async componentDidMount() {
     try {
       const books = await BooksAPI.getAll();
@@ -127,7 +129,12 @@ class BooksApp extends React.Component {
           path="/details/:id"
           render={({ match, location }) =>
             <Details
-              books={this.state.books}
+              books={
+                /* If the user is arriving from a bookmark, we need to know
+                when the books are loaded, so that we can update the book's
+                state appropriately in the details page. */
+                this.state.books
+              }
               handleBookListChange={this.handleBookListChange}
               findBookInList={this.findBookInList}
               getBook={this.getBook}
