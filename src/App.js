@@ -9,22 +9,15 @@ import Search from "./Search";
 import Details from "./Details";
 
 class BooksApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.getBook = this.getBook.bind(this);
-    this.findBookInList = this.findBookInList.bind(this);
-    this.handleBookListChange = this.handleBookListChange.bind(this);
+  state = {
+    books: []
+  };
 
-    this.state = {
-      books: []
-    };
-  }
-
-  findBookInList(id) {
+  findBookInList = id => {
     return this.state.books.findIndex(book => book.id === id);
-  }
+  };
 
-  async getBook(id) {
+  getBook = async id => {
     // Checks if the book is already loaded and returns it if it is.
     const bookIdx = this.findBookInList(id);
     if (bookIdx !== -1) {
@@ -42,9 +35,9 @@ class BooksApp extends React.Component {
     } catch (e) {
       console.error(`There was an API error: ${e}`);
     }
-  }
+  };
 
-  async handleBookListChange(book, shelf) {
+  handleBookListChange = async (book, shelf) => {
     // Save the state in case the API messes up.
     const oldState = JSON.parse(JSON.stringify(this.state));
     // Update the state immediately
@@ -92,7 +85,7 @@ class BooksApp extends React.Component {
       this.setState(oldState);
       console.error(`There was an API error: ${e}`);
     }
-  }
+  };
 
   // Gets all the books from the API, that are currently in a list.
   async componentDidMount() {
