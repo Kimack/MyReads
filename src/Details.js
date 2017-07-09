@@ -10,6 +10,7 @@ class Details extends React.Component {
 
   // Get the book from the App state or from the API.
   componentDidMount() {
+    window.scrollTo(0, 0);
     const { getBook, bookId } = this.props;
     getBook(bookId).then(book => {
       this.setState({ book });
