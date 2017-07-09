@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
-import * as BooksAPI from "./BooksAPI";
+import * as BooksAPI from "../BooksAPI";
 // our modules
 import Book from "./Book";
 import Header from "./Header";

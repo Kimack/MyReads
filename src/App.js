@@ -4,9 +4,9 @@ import { Route } from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
 import "./App.css";
 // components
-import ListBooks from "./ListBooks";
-import Search from "./Search";
-import Details from "./Details";
+import ListBooks from "./components/ListBooks";
+import Search from "./components/Search";
+import Details from "./components/Details";
 
 class BooksApp extends React.Component {
   state = {
