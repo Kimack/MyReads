@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 // our modules
+import Header from "./Header";
 import placeholder from "./bookPlaceholder.json";
 
 class Details extends React.Component {
@@ -31,11 +31,7 @@ class Details extends React.Component {
     const { imageLinks, shelf, title, authors, description } = book;
     return (
       <div>
-        <Link to="/" className="header-link">
-          <header className="list-books-title">
-            <h1>MyReads</h1>
-          </header>
-        </Link>
+        <Header />
         <article className="book-details">
           <section className="book-cover-details">
             <img

@@ -3,14 +3,13 @@ import { Link } from "react-router-dom";
 import startCase from "lodash.startcase";
 // our modules
 import Book from "./Book";
+import Header from "./Header";
 
 function ListBooks(props) {
   const shelves = ["currentlyReading", "wantToRead", "read"];
   return (
     <div className="list-books">
-      <div className="list-books-title">
-        <h1>MyReads</h1>
-      </div>
+      <Header />
       <div className="open-search">
         <Link to="/search" alt="Add books">
           Add Books

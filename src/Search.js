@@ -4,6 +4,7 @@ import queryString from "query-string";
 import * as BooksAPI from "./BooksAPI";
 // our modules
 import Book from "./Book";
+import Header from "./Header";
 
 class Search extends React.Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class Search extends React.Component {
   render() {
     return (
       <div className="search-books">
+        <Header />
         <div className="search-books-bar">
           <Link to="/" alt="Close search" className="close-search">
             Close
