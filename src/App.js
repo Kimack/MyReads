@@ -38,9 +38,9 @@ class BooksApp extends React.Component {
   };
 
   handleBookListChange = async (book, shelf) => {
-    // Save the state in case the API messes up.
+    // We update the state immediately and fix it later if there is an issue.
+    // So we save the state in case the API messes up.
     const oldState = JSON.parse(JSON.stringify(this.state));
-    // Update the state immediately
     const bookIdx = this.findBookInList(book.id);
     if (bookIdx !== -1) {
       this.setState(state => {
@@ -54,9 +54,10 @@ class BooksApp extends React.Component {
         return state;
       });
     }
-    // Call the API
+
     try {
       const APIShelfState = await BooksAPI.update({ id: book.id }, shelf);
+      // Check if the API and the current state are in agreement.
       const currentShelfState = this.state.books.reduce(
         (acc, book) => {
           if (book.shelf !== "none") acc[book.shelf].push(book.id);
@@ -68,13 +69,14 @@ class BooksApp extends React.Component {
           read: []
         }
       );
-      // Check if the API and the current state are in agreement.
-      const equal = Object.keys(currentShelfState).every(shelf => {
+
+      const isAPIEqualToState = Object.keys(currentShelfState).every(shelf => {
         return currentShelfState[shelf].every(id =>
           APIShelfState[shelf].includes(id)
         );
       });
-      if (!equal) {
+
+      if (!isAPIEqualToState) {
         this.setState(oldState);
         console.error(
           "The data returned from the API did not match the current state."
@@ -87,7 +89,6 @@ class BooksApp extends React.Component {
     }
   };
 
-  // Gets all the books from the API, that are currently in a list.
   async componentDidMount() {
     try {
       const books = await BooksAPI.getAll();
