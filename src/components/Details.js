@@ -1,6 +1,7 @@
 import React from "react";
 // our modules
 import Header from "./Header";
+import Rating from "./Rating";
 import placeholder from "./bookPlaceholder.json";
 
 class Details extends React.Component {
@@ -29,6 +30,10 @@ class Details extends React.Component {
   render() {
     const { book } = this.state;
     const { imageLinks, shelf, title, authors, description } = book;
+    console.log(book.averageRating);
+    const rating = book.averageRating
+      ? <Rating rating={book.averageRating} />
+      : "";
     return (
       <div>
         <Header />
@@ -75,6 +80,7 @@ class Details extends React.Component {
             <h1 className="book-details-title">
               {title}
             </h1>
+            {rating}
             <p>By</p>
             {authors.map(author =>
               <p key={author} className="book-details-author">
