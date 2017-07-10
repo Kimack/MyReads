@@ -192,3 +192,9 @@ body,
   left: 170px;
   top: 270px;
 }
+
+.book-details-author {
+  margin-top: -10px;
+  line-height: 1;
+  color: #999;
+}

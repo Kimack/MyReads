@@ -75,7 +75,7 @@ class Details extends React.Component {
             <h1 className="book-details-title">
               {title}
             </h1>
-            <p>Authors</p>
+            <p>By</p>
             {authors.map(author =>
               <p key={author} className="book-details-author">
                 {author}
