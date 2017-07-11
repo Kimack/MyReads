@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import queryString from "query-string";
 import * as BooksAPI from "../BooksAPI";
 // our modules
@@ -21,6 +22,7 @@ class Search extends React.Component {
     this.setState({ books: [] });
   }
 
+  // Handles predefined searches from a link, like /search?search=rowling.
   componentWillMount() {
     const query = queryString.parse(location.search);
     if (query.search) {
@@ -57,6 +59,8 @@ class Search extends React.Component {
           }
         });
       }
+      // Pushes the new searchterm to the URL.
+      this.props.history.push(`/search?search=${this.state.query}`);
     }, this.searchDelay);
   }
 
@@ -94,4 +98,4 @@ class Search extends React.Component {
   }
 }
 
-export default Search;
+export default withRouter(Search);
