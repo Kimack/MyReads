@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import queryString from "query-string";
 import * as BooksAPI from "../BooksAPI";
 // our modules
@@ -25,8 +25,8 @@ class Search extends React.Component {
   // Handles predefined searches from a link, like /search?search=rowling.
   componentWillMount() {
     const query = queryString.parse(location.search);
-    if (query.search) {
-      this.handleSearchInput(query.search);
+    if (query.q) {
+      this.handleSearchInput(query.q);
     }
   }
 
@@ -60,7 +60,7 @@ class Search extends React.Component {
         });
       }
       // Pushes the new searchterm to the URL.
-      this.props.history.push(`/search?search=${this.state.query}`);
+      this.props.history.push(`/search?q=${this.state.query}`);
     }, this.searchDelay);
   }
 
