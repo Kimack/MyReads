@@ -1,11 +1,10 @@
 import React from "react";
 import FontAwesome from "react-fontawesome";
 
-const Rating = props => {
+const Rating = ({ rating }) => {
   return (
     <div className="rating">
       {[1, 2, 3, 4, 5].map(val => {
-        const rating = props.rating;
         const starType =
           rating >= val
             ? "star"

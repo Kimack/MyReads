@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Book(props) {
-  const { id, imageLinks, shelf, title, authors } = props.book;
+function Book({ book, handleBookListChange }) {
+  const { id, imageLinks, shelf, title, authors } = book;
   return (
     <li>
       <div className="book">
@@ -31,8 +31,7 @@ function Book(props) {
           >
             <select
               value={shelf}
-              onChange={e =>
-                props.handleBookListChange(props.book, e.target.value)}
+              onChange={e => handleBookListChange(book, e.target.value)}
             >
               <option value="none" disabled>
                 Move to...

@@ -5,7 +5,7 @@ import startCase from "lodash.startcase";
 import Book from "./Book";
 import Header from "./Header";
 
-function ListBooks(props) {
+function ListBooks({ books, handleBookListChange }) {
   const shelves = ["currentlyReading", "wantToRead", "read"];
   return (
     <div className="list-books">
@@ -25,13 +25,13 @@ function ListBooks(props) {
                 </h2>
                 <div className="bookshelf-books">
                   <ol className="books-grid">
-                    {props.books
+                    {books
                       .filter(book => book.shelf === shelf)
                       .map(book =>
                         <Book
                           key={book.id}
                           book={book}
-                          handleBookListChange={props.handleBookListChange}
+                          handleBookListChange={handleBookListChange}
                         />
                       )}
                   </ol>
