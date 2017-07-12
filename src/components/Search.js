@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import sleep from "then-sleep";
 import queryString from "query-string";
-import * as BooksAPI from "../BooksAPI";
 // our modules
+import * as BooksAPI from "../BooksAPI";
 import Book from "./Book";
 import Header from "./Header";
 
@@ -22,46 +23,58 @@ class Search extends React.Component {
     this.setState({ books: [] });
   }
 
-  // Handles predefined searches from a link, like /search?search=rowling.
+  // Pushes the new searchterm to the URL.
+  updateQueryString(searchQuery) {
+    this.props.history.push(
+      searchQuery !== "" ? `/search?q=${searchQuery}` : "/search"
+    );
+  }
+
+  async handleSearchInput(searchQuery) {
+    this.updateQueryString(searchQuery);
+    this.setState(state => (state.query = searchQuery));
+
+    if (searchQuery === "") {
+      this.resetBookList();
+      return;
+    }
+
+    // Only if the query is unchanged after searchDelay ms, do we do a search.
+    await sleep(this.searchDelay);
+
+    // If this.state.query has changed after sleeping for this.searchDelay ms
+    // a new handleSearchInput() event has been called, so we exit this one.
+    if (this.state.query !== searchQuery) return;
+
+    try {
+      const books = await BooksAPI.search(this.state.query);
+      if (books.error) {
+        this.resetBookList();
+        return;
+      }
+      if (books.length) {
+        this.setState(state => {
+          state.books = books.map(book => {
+            const idx = this.props.findBookInList(book.id);
+            return idx !== -1
+              ? this.props.books[idx]
+              : Object.assign(book, { shelf: "none" });
+          });
+          return state;
+        });
+      }
+    } catch (e) {
+      console.error(`The API responded with an error: ${e}`);
+    }
+  }
+
+  // Handles searches from a link/bookmark as well as reloads.
+  // Example: /search?q=robot.
   componentWillMount() {
     const query = queryString.parse(location.search);
     if (query.q) {
       this.handleSearchInput(query.q);
     }
-  }
-
-  handleSearchInput(searchQuery) {
-    const queryCopy = searchQuery;
-    this.setState(state => (state.query = searchQuery));
-
-    setTimeout(() => {
-      if (queryCopy === "") {
-        this.resetBookList();
-        return;
-      }
-      // Only if the query is unchanged after 500 ms, do we do a search.
-      if (this.state.query === queryCopy) {
-        BooksAPI.search(this.state.query).then(books => {
-          if (books.error) {
-            this.resetBookList();
-            return;
-          }
-          if (books.length) {
-            this.setState(state => {
-              state.books = books.map(book => {
-                const idx = this.props.findBookInList(book.id);
-                return idx !== -1
-                  ? this.props.books[idx]
-                  : Object.assign(book, { shelf: "none" });
-              });
-              return state;
-            });
-          }
-        });
-      }
-      // Pushes the new searchterm to the URL.
-      this.props.history.push(`/search?q=${this.state.query}`);
-    }, this.searchDelay);
   }
 
   render() {
