@@ -13,7 +13,9 @@ function Book({ book, handleBookListChange }) {
               style={{
                 width: 128,
                 height: 193,
-                backgroundImage: `url("${imageLinks.thumbnail}")`,
+                backgroundImage: `url("${imageLinks
+                  ? imageLinks.thumbnail
+                  : "http://dummyimage.com/128x193/292929/e3e3e3&text=No Cover Available"}")`,
                 outline:
                   shelf === "none" ? "2px solid rgba(0,0,0,0.23)" : "none",
                 boxShadow:
@@ -46,11 +48,12 @@ function Book({ book, handleBookListChange }) {
         <div className="book-title">
           {title}
         </div>
-        {authors.map(author =>
-          <div key={author} className="book-authors">
-            {author}
-          </div>
-        )}
+        {authors &&
+          authors.map(author =>
+            <div key={author} className="book-authors">
+              {author}
+            </div>
+          )}
       </div>
     </li>
   );

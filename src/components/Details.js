@@ -30,7 +30,6 @@ class Details extends React.Component {
   render() {
     const { book } = this.state;
     const { imageLinks, shelf, title, authors, description } = book;
-    console.log(book.averageRating);
     const rating = book.averageRating
       ? <Rating rating={book.averageRating} />
       : "";
@@ -40,7 +39,11 @@ class Details extends React.Component {
         <article className="book-details">
           <section className="book-cover-details">
             <img
-              src={imageLinks.thumbnail}
+              src={
+                imageLinks
+                  ? imageLinks.thumbnail
+                  : "http://dummyimage.com/256x386/292929/e3e3e3&text=No Cover Available"
+              }
               alt="Book Cover"
               width="192"
               height="290"
@@ -82,11 +85,12 @@ class Details extends React.Component {
             </h1>
             {rating}
             <p>By</p>
-            {authors.map(author =>
-              <p key={author} className="book-details-author">
-                {author}
-              </p>
-            )}
+            {authors &&
+              authors.map(author =>
+                <p key={author} className="book-details-author">
+                  {author}
+                </p>
+              )}
           </section>
           <p className="book-details-description">
             {description}
